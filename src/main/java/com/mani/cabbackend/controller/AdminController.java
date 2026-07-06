@@ -15,15 +15,23 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
-    @PostMapping("/login")
-    public String login(@RequestBody LoginRequest request) {
-
-        Optional<Admin> admin = adminService.login(request.getEmail());
-
-        if (admin.isPresent()) {
-            return "Login Success";
-        }
-
-        return "Invalid Email";
+    @PostMapping("/register")
+    public Admin register(@RequestBody Admin admin) {
+        return adminService.register(admin);
     }
+
+    @PostMapping("/login")
+public String login(@RequestBody LoginRequest request) {
+
+    boolean success = adminService.login(
+            request.getEmail(),
+            request.getPassword()
+    );
+
+    if(success) {
+        return "Login Success";
+    }
+
+    return "Invalid Email or Password";
+}
 }
